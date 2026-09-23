@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Dashboard de Indicadores</title>
+
+  <link rel="stylesheet"
+        href="style.css">
+
+  <!-- Chart.js -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js">
+  </script>
+
+</head>
+
+<body>
+
+  <header class="top-header">
+
+    <div class="header-content">
+
+      <div>
+        <h1>Dashboard de Indicadores</h1>
+        <p>Indicadores de máquinas y salas</p>
+      </div>
+
+      <div class="header-status">
+
+        <span id="estadoConexion"
+              class="status offline">
+          Cargando...
+        </span>
+
+        <span id="ultimaActualizacion">
+          —
+        </span>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <main class="container">
+
+
+    <!-- =====================================================
+         FILTROS
+    ====================================================== -->
+
+    <section class="filter-card">
+
+      <div class="filter-header">
+
+        <div>
+          <h2>Filtros</h2>
+          <p>Selecciona los criterios para analizar los indicadores.</p>
+        </div>
+
+        <div class="filter-buttons">
+
+          <button
+            id="btnActualizar"
+            class="btn btn-primary">
+            ↻ Actualizar datos
+          </button>
+
+          <button
+            id="btnLimpiar"
+            class="btn btn-secondary">
+            Limpiar filtros
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="filters-grid">
+
+
+        <div class="filter-group">
+
+          <label for="filtroLocal">
+            LOCAL
+          </label>
+
+          <select id="filtroLocal">
+            <option value="">
+              Todos
+            </option>
+          </select>
+
+        </div>
+
+
+        <div class="filter-group">
+
+          <label for="filtroTipo">
+            TIPO MÁQUINA
+          </label>
+
+          <select id="filtroTipo">
+            <option value="">
+              Todos
+            </option>
+          </select>
+
+        </div>
+
+
+        <div class="filter-group">
+
+          <label for="filtroJuego">
+            JUEGO
+          </label>
+
+          <select id="filtroJuego">
+            <option value="">
+              Todos
+            </option>
+          </select>
+
+        </div>
+
+
+        <div class="filter-group">
+
+          <label for="filtroMaquina">
+            MÁQUINA
+          </label>
+
+          <select id="filtroMaquina">
+            <option value="">
+              Todos
+            </option>
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <div class="search-box">
+
+        <label for="buscador">
+          Buscar
+        </label>
+
+        <input
+          id="buscador"
+          type="text"
+          placeholder="Buscar local, máquina, juego, tipo, indicador..."
+          autocomplete="off">
+
+      </div>
+
+
+      <div id="chips"
+           class="chips">
+      </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         MENSAJE
+    ====================================================== -->
+
+    <div id="mensaje"
+         class="message hidden">
+    </div>
+
+
+
+    <!-- =====================================================
+         GRÁFICOS MENSUALES
+    ====================================================== -->
+
+    <section class="section-title">
+
+      <div>
+        <h2>Evolución mensual</h2>
+        <p>
+          Los gráficos muestran el promedio de cada indicador por mes.
+        </p>
+      </div>
+
+    </section>
+
+
+    <section class="charts-grid three-columns">
+
+
+      <div class="chart-card">
+
+        <div class="chart-title">
+          <h3>INDICADOR COIN PROM</h3>
+        </div>
+
+        <div class="chart-wrapper">
+          <canvas id="chartCoin"></canvas>
+        </div>
+
+      </div>
+
+
+      <div class="chart-card">
+
+        <div class="chart-title">
+          <h3>INDICADOR VENTA PROM</h3>
+        </div>
+
+        <div class="chart-wrapper">
+          <canvas id="chartVenta"></canvas>
+        </div>
+
+      </div>
+
+
+      <div class="chart-card">
+
+        <div class="chart-title">
+          <h3>INDICADOR T.C</h3>
+        </div>
+
+        <div class="chart-wrapper">
+          <canvas id="chartTC"></canvas>
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         RANKING LOCAL
+    ====================================================== -->
+
+    <section class="ranking-section">
+
+      <div class="section-title ranking-heading">
+
+        <div>
+          <h2>Ranking por LOCAL</h2>
+
+          <p>
+            Comparación de locales según el indicador seleccionado.
+          </p>
+        </div>
+
+
+        <div class="ranking-control">
+
+          <label for="mesRankingLocal">
+            MES RANKING LOCAL
+          </label>
+
+          <select id="mesRankingLocal">
+            <option value="">
+              Todos
+            </option>
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <section class="charts-grid three-columns">
+
+
+        <div class="chart-card ranking-card">
+
+          <div class="chart-title">
+            <h3>RKG LOCAL – COIN PROM</h3>
+          </div>
+
+          <div class="ranking-scroll">
+            <div
+              class="ranking-chart-wrapper"
+              id="wrapperRankingLocalCoin">
+
+              <canvas id="rankingLocalCoin"></canvas>
+
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="chart-card ranking-card">
+
+          <div class="chart-title">
+            <h3>RKG LOCAL – VENTA PROM</h3>
+          </div>
+
+          <div class="ranking-scroll">
+            <div
+              class="ranking-chart-wrapper"
+              id="wrapperRankingLocalVenta">
+
+              <canvas id="rankingLocalVenta"></canvas>
+
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="chart-card ranking-card">
+
+          <div class="chart-title">
+            <h3>RKG LOCAL – T.C</h3>
+          </div>
+
+          <div class="ranking-scroll">
+            <div
+              class="ranking-chart-wrapper"
+              id="wrapperRankingLocalTC">
+
+              <canvas id="rankingLocalTC"></canvas>
+
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         RANKING DETALLADO
+    ====================================================== -->
+
+    <section
+      id="detalleSection"
+      class="ranking-section hidden">
+
+
+      <div class="section-title ranking-heading">
+
+        <div>
+
+          <h2>Ranking detallado</h2>
+
+          <p>
+            Análisis del local seleccionado.
+          </p>
+
+        </div>
+
+
+        <div class="detail-controls">
+
+
+          <div class="ranking-control">
+
+            <label for="indicadorDetalle">
+              INDICADOR PARA RANKINGS
+            </label>
+
+            <select id="indicadorDetalle">
+
+              <option value="coin">
+                COIN PROM
+              </option>
+
+              <option value="venta">
+                VENTA PROM
+              </option>
+
+              <option value="tc">
+                T.C
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="ranking-control">
+
+            <label for="mesRankingDetalle">
+              MES RANKING DETALLADO
+            </label>
+
+            <select id="mesRankingDetalle">
+
+              <option value="">
+                Todos
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <section class="charts-grid three-columns">
+
+
+        <div class="chart-card ranking-card">
+
+          <div class="chart-title">
+            <h3>RKG TIPO DE MÁQUINA</h3>
+          </div>
+
+          <div class="ranking-scroll">
+
+            <div
+              class="ranking-chart-wrapper"
+              id="wrapperRankingTipo">
+
+              <canvas id="rankingTipo"></canvas>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="chart-card ranking-card">
+
+          <div class="chart-title">
+            <h3>RKG JUEGOS</h3>
+          </div>
+
+          <div class="ranking-scroll">
+
+            <div
+              class="ranking-chart-wrapper"
+              id="wrapperRankingJuego">
+
+              <canvas id="rankingJuego"></canvas>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="chart-card ranking-card">
+
+          <div class="chart-title">
+            <h3>RKG MÁQUINAS</h3>
+          </div>
+
+          <div class="ranking-scroll">
+
+            <div
+              class="ranking-chart-wrapper"
+              id="wrapperRankingMaquina">
+
+              <canvas id="rankingMaquina"></canvas>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+      </section>
+
+    </section>
+
+
+  </main>
+
+
+  <footer>
+
+    Dashboard de Indicadores
+
+  </footer>
+
+
+  <script src="script.js"></script>
+
+</body>
+
+</html>
