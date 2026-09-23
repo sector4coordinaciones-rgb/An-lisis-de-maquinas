@@ -12,7 +12,7 @@
 */
 
 const API_URL =
-  'PEGA_AQUI_TU_URL_DE_APPS_SCRIPT';
+  'https://script.google.com/macros/s/AKfycbzoWehRe0v7RWvqM6bQ4X7Yc5jzQv1-Dz7Bmoul9Nc9cMRWr5b7jq5zKYU4NSea8VQP-A/exec';
 
 
 /* =========================================================
